@@ -1,0 +1,352 @@
+/*There are flight paths between cities. 
+If there is a flight between city A and city B then there is an edge between the cities. 
+The cost of the edge can be the time that flight take to reach city B from A, or the amount of fuel used for the journey. Represent this as a graph.
+The node can be represented by airport name or name of the city.
+ Use adjacency list representation of the graph or use adjacency matrix representation of the graph. 
+ Justify the storage representation used */
+#include<iostream>
+#include<stdlib.h>
+#include<string.h>
+using namespace std;
+struct node
+{   string vertex;
+    int time;
+    node *next;
+};   
+class adjmatlist
+{    int m[10][10],n,i,j; 
+     char ch;  
+	 string v[20];   
+	 node *head[20];  
+	 node *temp=NULL;
+
+     public:
+     adjmatlist()
+     {      for(i=0;i<20;i++)
+            {    head[i]=NULL;  }
+     }          
+     void getgraph();
+     void adjlist();
+ 
+     void displaym();
+     void displaya();
+};
+void adjmatlist::getgraph()
+{
+   cout<<"\n enter no. of cities(max. 20) :- ";
+   cin>>n;
+   cout<<"\n enter name of cities :- "<<"\n";
+   for(i=0;i<n;i++)
+     cin>>v[i];         
+   for(i=0;i<n;i++)
+   { 
+      for(j=0;j<n;j++)
+      {  cout<<"\n if path is present between city "<<v[i]<<" and "<<v[j]<<" then press enter y otherwise n:- "; 
+         cin>>ch;
+         if(ch=='y')
+         { 
+           cout<<"\n enter time required to reach city "<<v[j]<<" from "<<v[i]<<" in minutes :- ";
+           cin>>m[i][j];
+         }
+         else if(ch=='n')
+         {  m[i][j]=0;  }
+         else
+         { cout<<"\n unknown entry";  }
+      }
+   }       
+      adjlist();
+        
+}
+void adjmatlist::adjlist()
+{      cout<<"\n\n ****";
+       for(i=0;i<n;i++)
+       {  node *p=new(struct node);
+          p->next=NULL;
+          p->vertex=v[i];   
+          head[i]=p;      
+		  cout<<"\n"<<head[i]->vertex;
+       }
+     
+       for(i=0;i<n;i++)
+       {  for(j=0;j<n;j++)
+          {
+                   if(m[i][j]!=0)
+                   {      
+                         node *p=new(struct node);
+                         p->vertex=v[j];
+                         p->time=m[i][j];
+                         p->next=NULL;
+                         if(head[i]->next==NULL)
+                         {  head[i]->next=p;   }
+                         else
+                         {  temp=head[i];
+                         while(temp->next!=NULL)
+                         {   temp=temp->next;  }
+                             temp->next=p;
+                         }
+
+                   }
+
+          }
+       }  
+     
+}
+void adjmatlist::displaym()
+{    cout<<"\n";
+     for(j=0;j<n;j++)
+     {  cout<<"\t\t"<<v[j];  }
+
+     for(i=0;i<n;i++)
+     {  cout<<"\n "<<v[i];
+        for(j=0;j<n;j++)
+        {   cout<<"\t\t"<<m[i][j];
+        }
+            cout<<"\n";
+     }
+}   
+void adjmatlist::displaya()
+{     
+       cout<<"\n adjacency list is:- \n";
+     
+       for(i=0;i<n;i++)
+       { 
+                 
+             
+                         if(head[i]==NULL)
+                         {   cout<<"\n adjacency list not present";  break;   }
+                         else
+                         { 
+                            cout<<"\n"<<head[i]->vertex;
+                         temp=head[i]->next;
+                         while(temp!=NULL)
+                         {  cout<<"-> "<<temp->vertex;
+                            temp=temp->next;  }
+                            
+                         }
+
+                  
+
+         
+       }
+     
+         cout<<"\n\n path and time required to reach cities is";
+       
+       for(i=0;i<n;i++)
+       { 
+                 
+             
+                         if(head[i]==NULL)
+                         {   cout<<"\n adjacency list not present";  break;   }
+                         else
+                         { 
+                           
+                         temp=head[i]->next;
+                         while(temp!=NULL)
+                         {  cout<<"\n"<<head[i]->vertex;
+                            cout<<"-> "<<temp->vertex<<"\n\t   [time required: "<<temp->time<<" min ]";
+                            temp=temp->next;  }
+                            
+                         }
+
+                  
+
+         
+       }
+}
+int main()
+{  int m;   
+   adjmatlist a;
+
+   while(1)
+   {
+   cout<<"\n\n **** flight paths between cities *******";
+   cout<<"\n 1.enter graph";
+   cout<<"\n 2.display adjacency matrix for cities";
+   cout<<"\n 3.display adjacency list for cities";
+   cout<<"\n 4.exit";
+   cout<<"\n\n enter the choice.......";
+   cin>>m;
+  
+        switch(m)
+       {              case 1: a.getgraph();
+                                    break;
+                     case 2: a.displaym();
+                                   break;
+                          
+                           case 3: a.displaya();
+                                   break;
+                            case 4: exit(0);
+                
+                            default:  cout<<"\n unknown choice";
+         }
+    }
+    return 0;
+}                            
+  /* **********OUTPUT ********
+  
+  
+
+ **** flight paths between cities *******
+ 1.enter graph
+ 2.display adjacency matrix for cities
+ 3.display adjacency list for cities
+ 4.exit
+
+ enter the choice.......1
+
+ enter no. of cities(max. 20) :- 5
+
+ enter name of cities :-
+pune
+nashik
+mumbai
+nagpur
+dhule
+
+ if path is present between city pune and pune then press enter y otherwise n:- n
+
+ if path is present between city pune and nashik then press enter y otherwise n:- y
+
+ enter time required to reach city nashik from pune in minutes :- 15
+
+ if path is present between city pune and mumbai then press enter y otherwise n:- y
+
+ enter time required to reach city mumbai from pune in minutes :- 30
+
+ if path is present between city pune and nagpur then press enter y otherwise n:- y
+
+ enter time required to reach city nagpur from pune in minutes :- 45
+
+ if path is present between city pune and dhule then press enter y otherwise n:- y
+
+ enter time required to reach city dhule from pune in minutes :- 40
+
+ if path is present between city nashik and pune then press enter y otherwise n:- n
+
+ if path is present between city nashik and nashik then press enter y otherwise n:- n
+
+ if path is present between city nashik and mumbai then press enter y otherwise n:- y
+
+ enter time required to reach city mumbai from nashik in minutes :- 32
+
+ if path is present between city nashik and nagpur then press enter y otherwise n:- y
+
+ enter time required to reach city nagpur from nashik in minutes :- 10
+
+ if path is present between city nashik and dhule then press enter y otherwise n:- n
+
+ if path is present between city mumbai and pune then press enter y otherwise n:- n
+
+ if path is present between city mumbai and nashik then press enter y otherwise n:- n
+
+ if path is present between city mumbai and mumbai then press enter y otherwise n:- y
+
+ enter time required to reach city mumbai from mumbai in minutes :- 47
+
+ if path is present between city mumbai and nagpur then press enter y otherwise n:- n
+
+ if path is present between city mumbai and dhule then press enter y otherwise n:- n
+
+ if path is present between city nagpur and pune then press enter y otherwise n:- n
+
+ if path is present between city nagpur and nashik then press enter y otherwise n:- n
+
+ if path is present between city nagpur and mumbai then press enter y otherwise n:- y
+
+ enter time required to reach city mumbai from nagpur in minutes :- 20
+
+ if path is present between city nagpur and nagpur then press enter y otherwise n:- y
+
+ enter time required to reach city nagpur from nagpur in minutes :- 10
+
+ if path is present between city nagpur and dhule then press enter y otherwise n:- y
+
+ enter time required to reach city dhule from nagpur in minutes :- 12
+
+ if path is present between city dhule and pune then press enter y otherwise n:- n
+
+ if path is present between city dhule and nashik then press enter y otherwise n:- y
+
+ enter time required to reach city nashik from dhule in minutes :- 17
+
+ if path is present between city dhule and mumbai then press enter y otherwise n:- n
+
+ if path is present between city dhule and nagpur then press enter y otherwise n:- n
+
+ if path is present between city dhule and dhule then press enter y otherwise n:- n
+
+
+ ****
+pune
+nashik
+mumbai
+nagpur
+dhule
+
+ **** flight paths between cities *******
+ 1.enter graph
+ 2.display adjacency matrix for cities
+ 3.display adjacency list for cities
+ 4.exit
+
+ enter the choice.......2
+
+                pune            nashik          mumbai          nagpur          dhule
+ pune           0               15              30              45              40
+
+ nashik         0               0               32              10              0
+
+ mumbai         0               0               47              0               0
+
+ nagpur         0               0               20              10              12
+
+ dhule          0               17              0               0               0
+
+
+ **** flight paths between cities *******
+ 1.enter graph
+ 2.display adjacency matrix for cities
+ 3.display adjacency list for cities
+ 4.exit
+
+ enter the choice.......3
+
+ adjacency list is:-
+
+pune-> nashik-> mumbai-> nagpur-> dhule
+nashik-> mumbai-> nagpur
+mumbai-> mumbai
+nagpur-> mumbai-> nagpur-> dhule
+dhule-> nashik
+
+ path and time required to reach cities is
+pune-> nashik
+           [time required: 15 min ]
+pune-> mumbai
+           [time required: 30 min ]
+pune-> nagpur
+           [time required: 45 min ]
+pune-> dhule
+           [time required: 40 min ]
+nashik-> mumbai
+           [time required: 32 min ]
+nashik-> nagpur
+           [time required: 10 min ]
+mumbai-> mumbai
+           [time required: 47 min ]
+nagpur-> mumbai
+           [time required: 20 min ]
+nagpur-> nagpur
+           [time required: 10 min ]
+nagpur-> dhule
+           [time required: 12 min ]
+dhule-> nashik
+           [time required: 17 min ]
+
+ **** flight paths between cities *******
+ 1.enter graph
+ 2.display adjacency matrix for cities
+ 3.display adjacency list for cities
+ 4.exit
+
+ enter the choice....... */
